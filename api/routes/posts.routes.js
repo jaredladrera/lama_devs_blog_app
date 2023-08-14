@@ -1,11 +1,14 @@
-import express from 'express';
-import { addPost } from '../controllers/posts.controller.js';
+ import express from 'express';
+import { addPost, deletePost, getPostById, getPosts, updatePost } from '../controllers/posts.controller.js';
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    console.log("connected to routes");
-    res.send("connected kana");
-});
+router.get("/", getPosts);
+
+router.get('/:id', getPostById);
+
+router.delete('/:id', deletePost);
+
+router.put('/:id', updatePost);
 
 export default router;

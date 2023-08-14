@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
 
 const posts = [
    {
@@ -30,6 +30,8 @@ const posts = [
  ];
  
 const Home = () => {
+
+  axios.defaults.withCredentials = true;
   return (
     <div className='home'>
       
