@@ -52,7 +52,6 @@ export const login = (req, res) => {
   
       const token = jwt.sign({ id: data[0].id }, "jwtkey");
       const { password, ...other } = data[0];
-  
       res
         .cookie("access_token", token, {
           httpOnly: true,
@@ -60,6 +59,8 @@ export const login = (req, res) => {
         .status(200)
         .json(other);
     });
+
+    // console.log(req.cookies.access_token, "this is the token");
   };
 
 // export const login = (req,res) => {

@@ -1,32 +1,69 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import DeleteLogo from './../img/delete.png';
 import EditLogo from './../img/edit.png';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Menu from '../components/Menu';
+import axios from 'axios';
+import moment from 'moment';
+import { AuthContext } from '../context/authContext';
 
 const Single = () => {
+
+  const [post, setPost] = useState([]);
+
+  const location = useLocation();
+  const navigate = useNavigate()
+
+  const postId = location.pathname.split("/")[2];
+
+  console.log(postId)
+  console.log(`${process.env.REACT_APP_HOST}/posts/${postId}`);
+
+  const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_HOST}/posts/${postId}`);
+        console.log(res.data);
+        setPost(res.data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    fetchData();
+  }, [postId])
+
+
+  const handleDelete = async () => {
+    try {
+       await axios.delete(`${process.env.REACT_APP_HOST}/posts/${postId}`);
+       navigate('/');
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className="single">
       <div className="content">
-        <img src="" alt="" />
+        <img src={post?.img} alt="" />
         <div className="user">
-          <img src="" alt="" />
+          { post.userImage && <img src={ post?.userImage } alt="" /> }
           <div className="info">
-            <span>Lance</span>
-            <p>posted 2 days ago</p>
+            <span>{ post?.username }</span>
+            <p>posted { moment(post?.date_posted).fromNow() }</p>
           </div>
-          <div className="edit">
+         { currentUser?.username === post.username && <div className="edit">
             <Link to={`/write?edit=2`}>
               <img src={EditLogo} alt="" />
             </Link>
-            <img src={DeleteLogo} alt="" />
-          </div>
+            <img onClick={handleDelete} src={DeleteLogo} alt="" />
+          </div> }
         </div>
-        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente eveniet assumenda et corporis quis numquam neque placeat, consectetur officiis modi!</h1>
-        <p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, fuga corporis. Illo laudantium voluptates hic voluptatibus odio incidunt deserunt magnam.</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas velit commodi fugiat odit delectus ea esse veritatis nam aliquid provident! Accusantium fugit deleniti deserunt ipsa officiis enim commodi, voluptatem animi aut voluptatum, atque assumenda accusamus dolor voluptates ipsam? Necessitatibus quis temporibus cum, expedita optio adipisci rerum eveniet esse doloribus in!</p>
-        </p>
+        <h1>{ post.title }</h1>
+         { post.description }
       </div>
       <Menu />
     </div>
