@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export const addAuth = (req, res) => {
-    req.json("from controller");
+    console.log(req.cookies.access_token, 'this is the cookies');
 }
 
 export const register = (req, res) => {

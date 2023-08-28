@@ -16,8 +16,8 @@ const Single = () => {
 
   const postId = location.pathname.split("/")[2];
 
-  console.log(postId)
-  console.log(`${process.env.REACT_APP_HOST}/posts/${postId}`);
+  // console.log(postId)
+  // console.log(`${process.env.REACT_APP_HOST}/posts/${postId}`);
 
   const { currentUser } = useContext(AuthContext);
 
@@ -25,7 +25,7 @@ const Single = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_HOST}/posts/${postId}`);
-        console.log(res.data);
+        // console.log(res.data);
         setPost(res.data)
       } catch (err) {
         console.log(err)
@@ -45,6 +45,7 @@ const Single = () => {
     }
   }
 
+  axios.defaults.withCredentials = true;
   return (
     <div className="single">
       <div className="content">
