@@ -57,7 +57,7 @@ export const login = (req, res) => {
           httpOnly: true,
         })
         .status(200)
-        .json(other);
+        .json({ token, ...other});
     });
 
     // console.log(req.cookies.access_token, "this is the token");

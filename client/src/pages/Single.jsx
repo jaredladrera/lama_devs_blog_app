@@ -25,7 +25,7 @@ const Single = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_HOST}/posts/${postId}`);
-        // console.log(res.data);
+        console.log(res.data);
         setPost(res.data)
       } catch (err) {
         console.log(err)
@@ -48,16 +48,17 @@ const Single = () => {
   axios.defaults.withCredentials = true;
   return (
     <div className="single">
+      {console.log(post.img, "this is post")}
       <div className="content">
-        <img src={post?.img} alt="" />
+        <img src={`../uploads/${post.img}`} alt="" />
         <div className="user">
-          { post.userImage && <img src={ post?.userImage } alt="" /> }
+          { post.userImage && <img src={post.userImage} alt="" /> }
           <div className="info">
             <span>{ post?.username }</span>
             <p>posted { moment(post?.date_posted).fromNow() }</p>
           </div>
          { currentUser?.username === post.username && <div className="edit">
-            <Link to={`/write?edit=2`}>
+            <Link to={`/write?edit=2`} state={ post }>
               <img src={EditLogo} alt="" />
             </Link>
             <img onClick={handleDelete} src={DeleteLogo} alt="" />
@@ -66,7 +67,7 @@ const Single = () => {
         <h1>{ post.title }</h1>
          { post.description }
       </div>
-      <Menu />
+      <Menu cat={post.cat}/>
     </div>
   )
 }

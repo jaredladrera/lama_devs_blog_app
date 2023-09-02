@@ -9,6 +9,8 @@ router.get('/:id', getPostById);
 
 router.delete('/:id', deletePost);
 
+router.post("/", addPost);
+
 router.put('/:id', updatePost);
 
 export default router;
